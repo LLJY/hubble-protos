@@ -1,0 +1,73 @@
+syntax = "proto3";
+
+option csharp_namespace = "hubble";
+import "Protos/common.proto";
+service Quiz{
+  rpc CreateQuiz(QuizRequest) returns (OneShotResponse);
+  rpc GetQuizzes(GetQuizRequest) returns (GetQuizResponse);
+  rpc UpdateQuiz(QuizRequest) returns (OneShotResponse);
+  rpc DeleteQuiz(QuizIdRequest) returns (OneShotResponse);
+  rpc RestoreQuiz(QuizIdRequest) returns (OneShotResponse);
+}
+message GetQuizRequest{
+  // empty because we have nothing
+}
+message GetQuizResponse{
+  repeated SingleQuiz quizzes = 1;
+}
+message SingleQuiz{
+  string _id = 1;
+  string title = 2;
+  string comments = 3;
+  string subjectName = 4;
+  repeated QuizQuestion questions = 5;
+  QuizStatus quizStatus = 6;
+  float marks = 7;
+  float totalMarks = 8;
+  //image will appear as url or base64 encoded.
+  string image = 9;
+}
+enum QuizStatus {
+  Recoverable = 0;
+  Attempted = 1;
+  UnAttempted = 2;
+  Editable = 3;
+  AttemptedAndEditable = 4;
+}
+// for all Create and Update of quizzes because im lazy to deal with more than one model
+message QuizRequest{
+  string id = 1;
+  string title = 2;
+  string comments = 3;
+  string subjectName = 4;
+  repeated QuizQuestion questions = 5;
+  string imageUrl = 6;
+}
+
+// just a question model, not for any routes
+message QuizQuestion{
+  string title = 1;
+  QuestionType type = 2;
+  // for MCQ, null if short answer
+  repeated QuestionOptions options = 3;
+  // for Short Answer, null if MCQ
+  repeated string keywords = 4;
+}
+enum QuestionType {
+  NoneType = 0;
+  MCQ = 1;
+  ShortAnswer = 2;
+}
+// MCQ options
+message QuestionOptions{
+  string option = 1;
+  bool isCorrect = 2;
+}
+
+// delete and restore.
+message QuizIdRequest{
+  string id = 1;
+}
+message RestoreQuizRequest{
+  string id = 1;
+}

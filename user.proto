@@ -1,0 +1,95 @@
+syntax = "proto3";
+import "Protos/common.proto";
+option csharp_namespace = "hubble";
+
+service User{
+  // common methods
+  rpc Login (LoginRequest) returns (OneShotResponse);
+  rpc UpdatePassword (UpdatePasswordRequest) returns (OneShotResponse);
+  rpc SignOut (SignOutRequest) returns (OneShotResponse);
+  // students
+  rpc GetStudents(GetStudentsRequest) returns (GetStudentsResponse);
+  rpc UploadStudents(UserCSVUpload) returns (OneShotResponse);
+  rpc DeleteStudent(DeleteStudentRequest) returns (OneShotResponse);
+  // teachers
+  rpc UploadTeachers(UserCSVUpload) returns (OneShotResponse);
+  rpc GetTeachers(GetTeachersRequest) returns (GetTeachersResponse);
+  rpc DeleteTeacher(DeleteTeacherRequest) returns (OneShotResponse);
+  // diplomas, i think it belongs here.
+  rpc GetDiplomas(GetDiplomasRequest) returns (GetDiplomasResponse);
+  //TODO update user (from session and from admin)
+}
+// login for students and teachers
+message LoginRequest{
+  string AdminNumber = 1;
+  string Password = 2;
+}
+// we will get the user info from Session (pre-release) or Identity (production)
+message SignOutRequest{
+}
+// students
+message DeleteStudentRequest{
+  string userId = 1;
+}
+message GetStudentsRequest{
+  string diplomaId = 1;
+}
+message GetStudentsResponse{
+  repeated Student students = 1;
+}
+message Student{
+  string firstName = 1;
+  string middleName = 2;
+  string lastName = 3;
+  string profilePictureUrl = 4;
+  string AdminNumber = 5;
+  string _id = 6;
+}
+// teachers
+message Teacher{
+  string firstName = 1;
+  string middleName = 2;
+  string lastName = 3;
+  string profilePictureUrl = 4;
+  string AdminNumber = 5;
+  string _id = 6;
+}
+message DeleteTeacherRequest{
+  string userId = 1;
+}
+message GetTeachersRequest{
+  string diplomaId = 1;
+}
+message GetTeachersResponse{
+  repeated Student students = 1;
+}
+// generic user types
+message UserCSVUpload{
+  string csv = 1;
+}
+message GetUserDetailsResponse{
+  string AdminNumber = 1;
+  Diploma diploma = 2;
+  string FirstName = 3;
+  string MiddleName = 4;
+  string LastName = 5;
+}
+// as per protobuf best practice, create an empty message if none
+message GetDiplomasRequest{
+}
+message GetDiplomasResponse{
+  repeated Diploma diploma = 1;
+}
+message Diploma{
+  string name = 1;
+  string Id = 2;
+  repeated Year years = 3;
+}
+message Year{
+  int32 year = 1;
+  // "OOAD, MBAP, FWEB"
+  repeated string modules = 2;
+}
+message UpdatePasswordRequest{
+  string password = 1;
+}

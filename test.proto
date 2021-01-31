@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+option csharp_namespace = "hubble";
+service Test{
+  // for unit testing, tests hash function
+  rpc TestHash (TestHashRequest) returns (TestHashResponse);
+}
+// request message containing password to hash
+message TestHashRequest{
+  string password = 1;
+}
+// response message containing hashed password
+message TestHashResponse{
+  string hash = 1;
+}
+message HelloRequest {
+  string name = 1;
+}
+
+// The response message containing the greetings.
+message HelloReply {
+  string message = 1;
+}

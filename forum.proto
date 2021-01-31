@@ -1,0 +1,8 @@
+syntax = "proto3";
+import "Protos/common.proto";
+option csharp_namespace = "hubble";
+
+//TODO complete proto implementation
+service Forum{
+  
+}

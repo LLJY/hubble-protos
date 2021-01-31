@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+option csharp_namespace = "hubble";
+
+// response if just an error / success message is needed
+message OneShotResponse{
+  bool isSuccessful = 1;
+  string errorMessage = 2;
+}
